@@ -1,4 +1,3 @@
-Wash dishesRead
-Run
-Write
-Drive
+Write a report!
+Drive to the market
+Go to the hospital
