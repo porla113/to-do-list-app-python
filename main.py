@@ -11,7 +11,7 @@ optMenu = """
 # get_todos function
 def get_todos(filepath):
     """
-    Open and read from a file
+    Read a text file and return a list of to-do items
     Arguments:
     - filepath - string
     Return:
@@ -24,7 +24,7 @@ def get_todos(filepath):
 # write_todos function
 def write_todos(filepath, todos_list):
     """
-    Write a string list to a file
+    Write a list of to-do items to a text file
     Arguments:
     - filepath: string
     - todos_list: a list of string
