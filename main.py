@@ -21,8 +21,8 @@ def get_todos(filepath):
         todos = file.readlines()
     return todos
 
-# set_todos function
-def set_todos(filepath, todos_list):
+# write_todos function
+def write_todos(filepath, todos_list):
     """
     Write a string list to a file
     Arguments:
@@ -34,16 +34,45 @@ def set_todos(filepath, todos_list):
     with open(filepath, 'w') as file:
         file.writelines(todos_list)
 
+# check_int_input function
+def isValid_intInput(input, start, stop):
+    """
+    Check that input string is integer and it is between start and stop
+    Arguments:
+    - input: string
+    - start: int
+    - stop: int
+    Return:
+    - True: input string is an integer and its value is between start and stop arguments
+    - False: otherwise
+    """
+    try:
+        intInput = int(input)
+    except ValueError:
+        return False
+
+    if intInput >= start and intInput <= stop:
+            return True 
+    else:
+        return False
+
 # Greeting message
 print("\nHi! Welcome to Todo List App\n")
 
 # Create todos list from a text file
 todos = get_todos(todos_file)
-print(type(todos))
+
 while True:
-    print(optMenu)
-    user_action = int(input("Select an operation with number 1-5: "))
-    print("\n")
+    # Main menu loop
+    while True:
+        print(optMenu)
+        user_action = input("Select an operation with number 1-5: ")
+        if isValid_intInput(user_action,1,5):
+            user_action = int(user_action)
+            print("\n")
+            break
+        else:
+            print("!!! Invalid input !!!")
 
     match user_action:
         case 1:
@@ -51,7 +80,7 @@ while True:
             todo = input("Enter a todo: ") + "\n"
             todos.append(todo)
 
-            set_todos(todos_file, todos)
+            write_todos(todos_file, todos)
 
         case 2:
             # Show operation
@@ -68,14 +97,14 @@ while True:
             new_todo = input("Enter a todo: ") + "\n"
             todos[number] = new_todo
 
-            set_todos(todos_file, todos)
+            write_todos(todos_file, todos)
         case 4:
             # Complete operation
             number = int(input("Number of the todo to complete: "))
             number = number - 1
             todos.pop(number)
 
-            set_todos(todos_file, todos)
+            write_todos(todos_file, todos)
         case 5:
             # Exit operation
             break
