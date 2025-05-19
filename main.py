@@ -1,5 +1,6 @@
 #from functions import get_todos, write_todos
 import functions
+import time
 
 # Variables
 todos_file = 'todos.txt'
@@ -18,6 +19,8 @@ print("\nHi! Welcome to Todo List App\n")
 todos = functions.get_todos(todos_file)
 
 while True:
+    now = time.strftime("%d %b %Y, %H:%M:%S")
+    print(f"It is {now}.")
     # Main menu loop
     while True:
         print(optMenu)
