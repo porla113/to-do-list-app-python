@@ -1,9 +1,37 @@
-#from functions import get_todos, write_todos
+import FreeSimpleGUI as sg
 import functions
 import time
 
-# Variables
+# File path
 todos_file = 'todos.txt'
+
+# Window
+# Window's contents
+layout = [[sg.Text("Type in a to-do")],
+          [sg.InputText(tooltip='Enter todo', key='todo'), sg.Button("Add")],
+         ]
+
+font = ('Helvetica', 15)
+# Create the window
+window = sg.Window('To-Do App', layout, font=font)
+while True:
+    event, values = window.read()
+    print(event)
+    print(values)
+    match event:
+        case "Add":
+            # Add operation
+            todos = functions.get_todos(todos_file)
+            todo = values['todo'] + "\n"
+            todos.append(todo)
+
+            functions.write_todos(todos_file, todos)
+
+        case sg.WIN_CLOSED:
+            break
+window.close()
+
+
 # Menu
 optMenu = """
 ========== Operation ===========
@@ -12,6 +40,7 @@ optMenu = """
 3. Edit
 """
 
+'''
 # Greeting message
 print("\nHi! Welcome to Todo List App\n")
 
@@ -70,3 +99,4 @@ while True:
             print("Please input 1-5.")
 
 print("\nGoodbye!\n")
+'''
