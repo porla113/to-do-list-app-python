@@ -7,6 +7,7 @@ todos_file = 'todos.txt'
 
 # Window
 # Window's contents
+text_time = sg.Text("", key="clock")
 text_instruct = sg.Text("Type in a to-do")
 text_to_user = sg.Text(text_color="black", key="text_to_user")
 input_box = sg.InputText(tooltip='Enter todo', key='todo')
@@ -18,7 +19,8 @@ list_box = sg.Listbox(values=functions.get_todos(todos_file),
                       key='todos', enable_events=True,
                       size=[45, 10])
 
-layout = [[text_instruct],
+layout = [[text_time], 
+          [text_instruct],
           [text_to_user],
           [input_box, add_button],
           [list_box, edit_button, complete_button],
@@ -28,7 +30,8 @@ font = ('Helvetica', 15)
 # Create the window
 window = sg.Window('To-Do App', layout, font=font)
 while True:
-    event, values = window.read()
+    event, values = window.read(timeout=200)
+    window['clock'].update(value=time.strftime("%d %b %Y, %H:%M:%S"))
     print(event)
     print(values)
     match event:
