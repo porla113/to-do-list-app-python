@@ -1,9 +1,14 @@
 import FreeSimpleGUI as sg
 import functions
-import time
+import time, os
 
 # File path
 todos_file = 'todos.txt'
+
+# Create a todos.txt if does not exist
+if not os.path.exists(todos_file):
+    with open("todos.txt", "w") as file:
+        pass
 
 # Window
 # Theme
