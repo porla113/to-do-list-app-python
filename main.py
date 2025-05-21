@@ -48,9 +48,7 @@ while True:
                 window['todo'].update(value='')
 
         case "Edit":
-            if len(values["todos"]) == 0:
-                window["text_to_user"].update(value="!!! Please select a todo to edit.")
-            else:
+            try:
                 to_edit = values['todos'][0]
                 new_todo = values['todo'].replace('\n','') + "\n"
 
@@ -63,11 +61,13 @@ while True:
                 # Update list box
                 window['todos'].update(values=todos)
                 window['todo'].update(value='')
+            except IndexError:
+                sg.popup("!!! Please select a todo to edit.", title="Oops!", font=("Helvetica", 15))
+                # window["text_to_user"].update(value="!!! Please select a todo to edit.")
+
 
         case "Complete":
-            if len(values["todos"]) == 0:
-                window["text_to_user"].update(value="!!! Please select a todo to complete.")
-            else:
+            try:
                 to_complete = values['todos'][0]
 
                 todos = functions.get_todos(todos_file)
@@ -80,6 +80,9 @@ while True:
                 # Update list box
                 window['todos'].update(values=todos)
                 window['todo'].update(value='')
+            except IndexError:
+                sg.popup("!!! Please select a todo to complete.", title="Oops!", font=("Helvetica", 15))
+                # window["text_to_user"].update(value="!!! Please select a todo to complete.")
 
         case "todos":
             window['todo'].update(value=values['todos'][0])
