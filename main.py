@@ -7,16 +7,22 @@ todos_file = 'todos.txt'
 
 # Window
 # Window's contents
+text_instruct = sg.Text("Type in a to-do")
+text_to_user = sg.Text(text_color="black", key="text_to_user")
 input_box = sg.InputText(tooltip='Enter todo', key='todo')
 add_button = sg.Button("Add")
+edit_button = sg.Button("Edit")
+complete_button = sg.Button("Complete")
+exit_button = sg.Button("Exit")
 list_box = sg.Listbox(values=functions.get_todos(todos_file), 
                       key='todos', enable_events=True,
                       size=[45, 10])
-edit_button = sg.Button("Edit")
 
-layout = [[sg.Text("Type in a to-do")],
+layout = [[text_instruct],
+          [text_to_user],
           [input_box, add_button],
-          [list_box, edit_button]]
+          [list_box, edit_button, complete_button],
+          [exit_button]]
 
 font = ('Helvetica', 15)
 # Create the window
@@ -28,30 +34,58 @@ while True:
     match event:
         case "Add":
             # Add operation
-            todos = functions.get_todos(todos_file)
-            todo = values['todo'].replace('\n','') + "\n"
-            todos.append(todo)
+            if len(values['todo']) == 0:
+                window['text_to_user'].update(value="!!! Please type a todo.")
+            else:
+                todos = functions.get_todos(todos_file)
+                todo = values['todo'].replace('\n','') + "\n"
+                todos.append(todo)
 
-            functions.write_todos(todos_file, todos)
+                functions.write_todos(todos_file, todos)
 
-            # Update list box
-            window['todos'].update(values=todos)
+                # Update list box
+                window['todos'].update(values=todos)
+                window['todo'].update(value='')
 
         case "Edit":
-            to_edit = values['todos'][0]
-            new_todo = values['todo'].replace('\n','') + "\n"
+            if len(values["todos"]) == 0:
+                window["text_to_user"].update(value="!!! Please select a todo to edit.")
+            else:
+                to_edit = values['todos'][0]
+                new_todo = values['todo'].replace('\n','') + "\n"
 
-            todos = functions.get_todos(todos_file)
-            index_to_edit = todos.index(to_edit)
-            todos[index_to_edit] = new_todo
+                todos = functions.get_todos(todos_file)
+                index_to_edit = todos.index(to_edit)
+                todos[index_to_edit] = new_todo
 
-            functions.write_todos(todos_file, todos)
+                functions.write_todos(todos_file, todos)
 
-            # Update list box
-            window['todos'].update(values=todos)
+                # Update list box
+                window['todos'].update(values=todos)
+                window['todo'].update(value='')
+
+        case "Complete":
+            if len(values["todos"]) == 0:
+                window["text_to_user"].update(value="!!! Please select a todo to complete.")
+            else:
+                to_complete = values['todos'][0]
+
+                todos = functions.get_todos(todos_file)
+                todos.remove(to_complete)
+                # index_to_complete = todos.index(to_complete)
+                # todos.pop(index_to_complete)
+
+                functions.write_todos(todos_file, todos)
+
+                # Update list box
+                window['todos'].update(values=todos)
+                window['todo'].update(value='')
 
         case "todos":
             window['todo'].update(value=values['todos'][0])
+
+        case "Exit":
+            break
             
         case sg.WIN_CLOSED:
             break
